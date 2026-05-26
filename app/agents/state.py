@@ -27,3 +27,11 @@ class AgentState(BaseModel):
     final_justification: Optional[str] = Field(default=None, description="Final system logical explanation behind the final verdict.")
     system_confidence: int = Field(default=0, description="Overall system confidence score from 0 to 100")
     metadata: Dict[str, Any] = Field(default_factory=dict, description="Execution times, token usage, and system stats")
+class FinalVerificationState(BaseModel):
+    isolated_claim: str = Field(..., description="The original isolated claim extracted from user input which was analyzed")
+    final_verdict: str = Field(..., description="The final evaluation outcome, Must be either 'Supported', 'Refuted', 'Conflicting'")
+    final_justification: str=  Field(..., description="The final step by step logical justification as to why the final verdict was chosen.")
+    system_confidence: int = Field(..., ge=0, le=100, description="The aggregated final confidence score.")
+    top_sources: List[EvidenceSource] = Field(..., description= "The final validated sources used for arbitration.")
+    
+
